@@ -1,0 +1,47 @@
+#! /bin/sh
+
+xsetroot -cursor_name left_ptr
+
+# keybinds by sxhkd
+sxhkd &
+
+# monitor/desktop setup
+bspc monitor DisplayPort-0 -d I II III IV
+bspc monitor DVI-I-1 -d V VI VII VIII
+
+# styling
+bspc config border_width         3
+bspc config window_gap          15
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+bspc config pointer_modifier mod1
+bspc config automatic_scheme longest_side
+bspc config swallow_first_click false
+bspc config click_to_focus true
+bspc config focused_border_color "#C94D47"
+bspc config normal_border_color "#300D0C"
+
+# some rules, pretty much bspwm defaults
+bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a mplayer2 state=floating
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off
+
+# boot polybar
+killall -q polybar
+systemctl --user start spotify-listener
+polybar -c ~/.config/polybar/config.ini top &
+polybar -c ~/.config/polybar/config.ini bottom &
+polybar -c ~/.config/polybar/config.ini bottom-left &
+
+# swap my monitor order
+xrandr --output DVI-I-1 --auto --output DisplayPort-0 --auto --right-of DVI-I-1
+
+# wallpaper
+feh --bg-fill ~/Pictures/bg.jpg &
+
+# compositor
+picom
+
+emote
